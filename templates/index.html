@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>cicmen35 Todo App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Todos</h1>
+    <ul>
+        {% for todo in todos %}
+            <li>
+                <input type="checkbox" name="done" {% if todo['done'] %} checked {%endif%} disabled onchange="this.form.submit()">
+                <span {%if todo['done'] %} sytle="text-decoration: line-through" {%endif%}>{{ todo['task'] }}</span>
+                <span class="{% if todo['done'] %}done{% endif %}">{{ todo['task'] }}</span>
+                <a href="{{ url_for('check', index=loop.index0) }}" class="check"><i class="fas fa-check"></i> Check</a>
+                <a href="{{ url_for('edit', index=loop.index0) }}" class="edit"><i class="fas fa-edit"></i> Edit</a>
+                <a href="{{ url_for('delete', index=loop.index0) }}" class="delete"><i class="fas fa-trash"></i> Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+        <form action="{{ url_for('add') }}" method="post" onsubmit="handleFormSubmit(this);">
+            <input type="text" name="todo" required>
+            <button type="submit">Add Todo</button>
+        </form>
+        <script>
+            function handleFormSubmit(form) {
+                form.querySelector('button').disabled = true;
+            }
+        </script>
+</body>
+</html>
